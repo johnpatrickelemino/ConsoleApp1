@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,17 +75,17 @@ namespace ConsoleApp1
 
             }
         }
-        public bool UserExists(string username)
+        public bool UserExists(string email)
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(*) FROM hradmun WHERE username = @username";
+                    string query = "SELECT COUNT(*) FROM users WHERE email = @email";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@email", email);
                         int count = Convert.ToInt32(cmd.ExecuteScalar());
                         return count > 0;
                     }
@@ -96,17 +97,17 @@ namespace ConsoleApp1
                 return false;
             }
         }
-        public bool ValidateLogin(string username, string userPassword)
+        public bool ValidateLogin(string email, string userPassword)
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(*) FROM hradmun WHERE username = @username AND password = @password";
+                    string query = "SELECT COUNT(*) FROM users WHERE email = @email AND password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@email", email);
                         cmd.Parameters.AddWithValue("@password", userPassword);
                         int count = Convert.ToInt32(cmd.ExecuteScalar());
                         return count > 0;
@@ -128,10 +129,10 @@ namespace ConsoleApp1
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(*) FROM hradmun WHERE username = @username AND password = @password";
+                    string query = "SELECT COUNT(*) FROM users WHERE email = @email AND password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@username", admin);
+                        cmd.Parameters.AddWithValue("@email", admin);
                         cmd.Parameters.AddWithValue("@password", adminPassword);
                         int count = Convert.ToInt32(cmd.ExecuteScalar());
                         return count > 0;
@@ -145,25 +146,90 @@ namespace ConsoleApp1
 
             }
         }
-
-
-
-
-
-
-
-        public void InsertInfo(string resume, string documents)
+        public bool Sched(int id, string schedule)
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO user (resume, password) VALUES (@resume, @documents)";
+
+                    // Step 1: Retrieve email based on jobapplication ID
+                    string query = "SELECT gmail FROM jobapplication WHERE id = @id";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@resume", resume);
-                        cmd.Parameters.AddWithValue("@documents", documents);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            string email = result.ToString();
+                            string insertQuery = "INSERT INTO job_schedule (email, Schedule) VALUES (@email, @schedule)";
+                            using (MySqlCommand insertCmd = new MySqlCommand(insertQuery, connection))
+                            {
+                                insertCmd.Parameters.AddWithValue("@email", email);
+                                insertCmd.Parameters.AddWithValue("@schedule", schedule);
+                                insertCmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No job application found with this ID.");
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+        public string GetEmail(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT gmail FROM jobapplication WHERE id = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        object result = cmd.ExecuteScalar();
+                        return result != null ? result.ToString() : null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return null;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        public void Register(string email, string password)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO users (email, password) VALUES (@email, @password)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@password", password);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -248,6 +314,65 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Error: " + ex.Message);
                 return false;
+            }
+        }
+
+        public static void all()
+        {
+            try
+            {
+                // Establish a connection to the database
+                using (MySqlConnection connection = new MySqlConnection())
+                {
+                    connection.Open();
+
+                    // SQL query to select all data from the jobapplication table
+                    string query = "SELECT * FROM jobapplication WHERE 1";
+
+                    // Execute the query and fetch the data using MySqlCommand and MySqlDataReader
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            // Check if the reader has rows (data)
+                            if (reader.HasRows)
+                            {
+                                // Read and display the data row by row
+                                while (reader.Read())
+                                {
+                                    // You can access columns by index or by column name
+                                    int id = reader.GetInt32(0); // Assuming the first column is 'id'
+                                    string name = reader.GetString(1); // Assuming the second column is 'name'
+                                    string bday = reader.GetString(2); // Assuming the third column is 'bday'
+                                    string address = reader.GetString(3); // Assuming the fourth column is 'address'
+                                    int contactno = reader.GetInt32(4); // Assuming the fifth column is 'contactno'
+                                    string gmail = reader.GetString(5); // Assuming the sixth column is 'gmail'
+                                    string civilstatus = reader.GetString(6); // Assuming the seventh column is 'civilstatus'
+                                    string resume = reader.GetString(7); // Assuming the eighth column is 'resume'
+
+                                    // Output the data to the console
+                                    Console.WriteLine($"ID: {id}");
+                                    Console.WriteLine($"Name: {name}");
+                                    Console.WriteLine($"Birthday: {bday}");
+                                    Console.WriteLine($"Address: {address}");
+                                    Console.WriteLine($"Contact No: {contactno}");
+                                    Console.WriteLine($"Gmail: {gmail}");
+                                    Console.WriteLine($"Civil Status: {civilstatus}");
+                                    Console.WriteLine($"Resume: {resume}");
+                                    Console.WriteLine("----------------------------");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No data found.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
         }
 

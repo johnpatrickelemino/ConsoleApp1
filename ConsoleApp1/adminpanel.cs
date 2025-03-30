@@ -30,16 +30,17 @@ namespace ConsoleApp1
 
         }
         public static void Sched()
-        { 
-            Console.WriteLine("enter applicant's id:"); // tulog na tayo // or gawin mo db mg addd posting at yung sa schedule ng applicant.... antok na me maaga pa bukasmaana me byeby punta kayo diba? si rommel bukas ulit HAHAHAH thankyou so much sa help wc <3
+        {
+            ConsoleApp1.Connection.all();
+            Console.WriteLine("Enter applicant's id:");
             int applicantid = int.Parse(Console.ReadLine());
-            Console.WriteLine("enter interview schedule: ");
-            int sched = int.Parse(Console.ReadLine());
-            Console.WriteLine("applicant's interview" + sched);
-        }
+            Console.WriteLine("enter interview schedule yyyy-mm-dd 00:00: ");
+            string sched = Console.ReadLine();
+            Connection conn = new Connection();
+            conn.Sched(applicantid, sched);
+            
+            ConsoleApp1.email.SendEmail(conn.GetEmail(applicantid), sched);
 
-       
-        
-        // gawa ng switchcasee ng mag add sya ng add jobposting tapos mag sched din mga applicant
+        }
     }
 }
