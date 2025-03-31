@@ -12,7 +12,8 @@ namespace ConsoleApp1
         {
             Console.WriteLine(@"enter choices: 
                                 1. interview schedule
-                                2. addjobposting");
+                                2. add job posting
+                                3. evaluate candidate");
             int choice = int.Parse(Console.ReadLine());
             switch (choice)
             {
@@ -22,13 +23,16 @@ namespace ConsoleApp1
                 case 2:
                     ConsoleApp1.jobposting.AddJobposting();
                     break;
+                case 3:
+                    adminpanel.EvaluateCandidate();
+                    break;
                 default:
                     Console.WriteLine("Invalid!");
                     break;
-            }//okay 
-
+            }
 
         }
+
         public static void Sched()
         {
             ConsoleApp1.Connection.all();
@@ -38,9 +42,25 @@ namespace ConsoleApp1
             string sched = Console.ReadLine();
             Connection conn = new Connection();
             conn.Sched(applicantid, sched);
-            
-            ConsoleApp1.email.SendEmail(conn.GetEmail(applicantid), sched);
 
+            ConsoleApp1.email.SendEmail(conn.GetEmail(applicantid), sched);
+        }
+
+        public static void EvaluateCandidate()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter Applicant ID: ");
+            int applicantId = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter Evaluation Report: ");
+            string evaluationReport = Console.ReadLine();
+
+            Connection conn = new Connection();
+            conn.EvaluateCandidate(applicantId, evaluationReport);
+
+            Console.WriteLine("Evaluation report added successfully!");
         }
     }
 }
+
+

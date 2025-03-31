@@ -78,6 +78,39 @@ namespace ConsoleApp1
             }
         }
 
+        public void ViewCandidateEvaluation()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"
+                        SELECT ja.name, ce.evaluationReport
+                        FROM candidate_evaluation ce
+                        JOIN jobapplication ja ON ce.applicantId = ja.id";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            Console.WriteLine("Candidate Evaluations:");
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"Applicant Name: {reader["name"]}");
+                                Console.WriteLine($"Evaluation Report: {reader["evaluationReport"]}");
+                                Console.WriteLine("----------------------------");
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
 
         public void RegisterHR(string admin, string adminPassword)
         {

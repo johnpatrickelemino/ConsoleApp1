@@ -40,7 +40,7 @@ namespace ConsoleApp1
                                       Console.WriteLine(@"
                                                                     3. HR ADMIN", Color.Salmon);
                                       Console.WriteLine(@"
-                                                                    4. Candidate Evaluation", Color.Salmon);
+                                                                    4. View Candidate Evaluation", Color.Salmon);
                                       Console.WriteLine(@"
                                                                     5. Exit", Color.Salmon);
 
@@ -59,7 +59,7 @@ namespace ConsoleApp1
                         ConsoleApp1.admin.Adminpage();
                         break;
                     case 4:
-                        ConsoleApp1.evaluation.CandidateEvaluation();
+                        ConsoleApp1.view.ViewCandidateEvaluation();
                         break;
                     case 5:
                         Environment.Exit(0);
