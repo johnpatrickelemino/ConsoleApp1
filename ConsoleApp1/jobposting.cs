@@ -21,7 +21,7 @@ namespace ConsoleApp1
             string description = Console.ReadLine();
             Console.WriteLine($"job title: {title}\njob description: {description}");
             Connection conn = new Connection();
-           conn.addjobposting(title, description);
+            conn.AddJobPosting(title, description);
         }
-    }  
+    }
 }

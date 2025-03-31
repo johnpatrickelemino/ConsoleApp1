@@ -15,6 +15,7 @@ namespace ConsoleApp1
         {
             Connection conn = new Connection();
             conn.ViewCandidateEvaluation();
+            ;
         }
     }
 }

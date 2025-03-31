@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Colorful;
+using Console = Colorful.Console;
 
 namespace ConsoleApp1
 {
@@ -10,10 +13,33 @@ namespace ConsoleApp1
     {
         public static void choice()
         {
-            Console.WriteLine(@"enter choices: 
-                                1. interview schedule
-                                2. add job posting
-                                3. evaluate candidate");
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine(@"
+                          ████████████████████████████████████████████████████████████████████████████████████████████████████████
+                          █▌                                                                                                    ▐█
+                          █▌        ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗         ▐█
+                          █▌        ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗        ▐█
+                          █▌        ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗         ██║   ██║   ██║        ▐█
+                          █▌        ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝         ██║   ██║   ██║        ▐█
+                          █▌        ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗       ██║   ╚██████╔╝        ▐█
+                          █▌         ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝         ▐█
+                          █▌                                                                                                    ▐█
+                          █▌                    ██╗  ██╗██████╗      █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗                    ▐█
+                          █▌                    ██║  ██║██╔══██╗    ██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║                    ▐█
+                          █▌                    ███████║██████╔╝    ███████║██║  ██║██╔████╔██║██║██╔██╗ ██║                    ▐█
+                          █▌                    ██╔══██║██╔══██╗    ██╔══██║██║  ██║██║╚██╔╝██║██║██║╚██╗██║                    ▐█
+                          █▌                    ██║  ██║██║  ██║    ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║                    ▐█
+                          █▌                    ╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝                    ▐█
+                          █▌                                                                                                    ▐█
+                          ████████████████████████████████████████████████████████████████████████████████████████████████████████", Color.Violet);
+            
+            Console.WriteLine(@"
+                                                                        Enter choices: 
+
+                                                                    1. Interview schedule
+                                                                    2. Add job posting
+                                                                    3. Evaluate candidate", Color.YellowGreen);
             int choice = int.Parse(Console.ReadLine());
             switch (choice)
             {
@@ -24,7 +50,7 @@ namespace ConsoleApp1
                     ConsoleApp1.jobposting.AddJobposting();
                     break;
                 case 3:
-                    adminpanel.EvaluateCandidate();
+                    Evaluate();
                     break;
                 default:
                     Console.WriteLine("Invalid!");
@@ -35,31 +61,32 @@ namespace ConsoleApp1
 
         public static void Sched()
         {
-            ConsoleApp1.Connection.all();
+            ConsoleApp1.Connection.All();
             Console.WriteLine("Enter applicant's id:");
             int applicantid = int.Parse(Console.ReadLine());
             Console.WriteLine("enter interview schedule yyyy-mm-dd 00:00: ");
             string sched = Console.ReadLine();
             Connection conn = new Connection();
             conn.Sched(applicantid, sched);
+            Console.WriteLine("Interview scheduled successfully!");
 
             ConsoleApp1.email.SendEmail(conn.GetEmail(applicantid), sched);
         }
-
-        public static void EvaluateCandidate()
+        public static void Evaluate()
         {
-            Console.Clear();
-            Console.WriteLine("Enter Applicant ID: ");
-            int applicantId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter Evaluation Report: ");
-            string evaluationReport = Console.ReadLine();
-
+            ConsoleApp1.Connection.All();
+            Console.WriteLine("Enter applicant's id:");
+            int applicantid = int.Parse(Console.ReadLine());
+            Console.WriteLine("enter Evaluation Report: ");
+            string evaluation = Console.ReadLine();
             Connection conn = new Connection();
-            conn.EvaluateCandidate(applicantId, evaluationReport);
+            conn.EvaluateCandidate(applicantid, evaluation);
+            Console.WriteLine("Evaluation successfully!");
 
-            Console.WriteLine("Evaluation report added successfully!");
+            ConsoleApp1.email.SendEvaluationReport(conn.GetEmail(applicantid), evaluation);
         }
+
+       
     }
 }
 

@@ -194,7 +194,7 @@ namespace ConsoleApp1
                                        (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_) ", Color.Aqua);
                 Islogin = false;
                 Console.WriteLine(@"
-                                                                      Logging out...");
+                                                                      Logging out...", Color.Aqua);
                 Thread.Sleep(2000);
                 Console.WriteLine(@"
                                                                You have been logged out!");

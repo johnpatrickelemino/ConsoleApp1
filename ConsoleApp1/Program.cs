@@ -9,7 +9,11 @@ namespace ConsoleApp1
     {
         static void Main()
         {
-            ConsoleApp1.Home.Homepage(); //meron na oo oo
+
+            ConsoleApp1.Home.Homepage();
+
+
+
         }
     }
 }
