@@ -15,7 +15,7 @@ namespace ConsoleApp1
         public Connection()
         {
             string server = "localhost";
-            string database = "midterm";
+            string database = "ConsoleApp1";
             string uid = "root";
             string password = "";
             connectionString = $"SERVER={server};DATABASE={database};UID={uid};PASSWORD={password};";
@@ -58,7 +58,7 @@ namespace ConsoleApp1
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO HRadmun (username, password) VALUES (@username, @password)";
+                    string query = "INSERT INTO HRadmin (username, password) VALUES (@username, @password)";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@username", admin);
@@ -249,7 +249,7 @@ namespace ConsoleApp1
                 using (MySqlConnection connection = new MySqlConnection(connectionString)) // wait pa check ako 
                 {
                     connection.Open();
-                    string query = "INSERT INTO addjobposting (jobtitle, jobdescription) VALUES (@jobtitle, @jobdescription)";
+                    string query = "INSERT INTO AddJobposting (jobtitle, jobdescription) VALUES (@jobtitle, @jobdescription)";
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@jobtitle", jobtitle);
@@ -277,13 +277,32 @@ namespace ConsoleApp1
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            Console.WriteLine("\n--- Job Postings ---");
+                            Console.Clear();
+                            Console.WriteLine(@"
+                          __| |_________________________________________________________________________________________________| |__
+                          __   _________________________________________________________________________________________________   __
+                            | |                                                                                                 | |  
+                            | |                                                                                                 | |  
+                            | |       ██╗ ██████╗ ██████╗     ██████╗  ██████╗ ███████╗████████╗██╗███╗   ██╗ ██████╗ ███████╗  | |  
+                            | |       ██║██╔═══██╗██╔══██╗    ██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██║████╗  ██║██╔════╝ ██╔════╝  | |  
+                            | |       ██║██║   ██║██████╔╝    ██████╔╝██║   ██║███████╗   ██║   ██║██╔██╗ ██║██║  ███╗███████╗  | |  
+                            | |  ██   ██║██║   ██║██╔══██╗    ██╔═══╝ ██║   ██║╚════██║   ██║   ██║██║╚██╗██║██║   ██║╚════██║  | |  
+                            | |  ╚█████╔╝╚██████╔╝██████╔╝    ██║     ╚██████╔╝███████║   ██║   ██║██║ ╚████║╚██████╔╝███████║  | |  
+                            | |   ╚════╝  ╚═════╝ ╚═════╝     ╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝  | |  
+                            | |                                                                                                 | |  
+                          __| |_________________________________________________________________________________________________| |__
+                          __   _________________________________________________________________________________________________   __
+                            | |                                                                                                 | |  ");
                             while (reader.Read())
                             {
-                                Console.WriteLine($"Job ID: {reader["id"]}");
-                                Console.WriteLine($"Job Title: {reader["jobtitle"]}");
-                                Console.WriteLine($"Description: {reader["jobdescription"]}");
-                                Console.WriteLine("---------------------");
+                                Console.WriteLine(@$"             
+                                                                  Job ID: {reader["id"]}");
+                                Console.WriteLine(@$"             
+                                                                  Job Title: {reader["jobtitle"]}");
+                                Console.WriteLine(@$"             
+                                                                  Description: {reader["jobdescription"]}");
+                                Console.WriteLine(@"
+                                                                  -------------------------------");
                             }
                         }
                     }
