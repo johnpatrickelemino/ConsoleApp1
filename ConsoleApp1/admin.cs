@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using Mysqlx.Session;
+using Colorful;
+using Console = Colorful.Console;
 
 namespace ConsoleApp1
 {
@@ -34,20 +37,21 @@ namespace ConsoleApp1
                           █▌                    ██║  ██║██║  ██║    ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║                    ▐█
                           █▌                    ╚═╝  ╚═╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝                    ▐█
                           █▌                                                                                                    ▐█
-                          ████████████████████████████████████████████████████████████████████████████████████████████████████████
-                                                                   
+                          ████████████████████████████████████████████████████████████████████████████████████████████████████████", Color.Violet);
+
+                Console.WriteLine(@"                                                   
                                                                          1. Login
 
-                                                                         2. Register");
+                                                                         2. Register", Color.Blue);
 
                 if (Islogin)
                 {
                     Console.WriteLine(@"
-                                                                         3. Logout");
+                                                                         3. Logout", Color.Blue);
                 }
 
                 Console.WriteLine(@"
-                                                                         4. Exit");
+                                                                         4. Exit", Color.Blue);
 
                 Console.WriteLine("Enter your choice: ");
                 int choice = int.Parse(Console.ReadLine());
@@ -70,10 +74,12 @@ namespace ConsoleApp1
                         }
                         break;
                     case 4:
-                        Console.WriteLine("Goodbye");
+                        Console.WriteLine(@" 
+                                                                          Goodbye!");
                         return;
                     default:
-                        Console.WriteLine("Invalid choice");
+                        Console.WriteLine(@"
+                                                                       Invalid choice");
                         break;
                 }
             }
@@ -95,7 +101,7 @@ namespace ConsoleApp1
                                                       ▐  ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║  ▌
                                                       ▐  ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝  ▌
                                                       ▐                                           ▌
-                                                      ▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌");
+                                                      ▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌", Color.Purple);
                 Console.WriteLine("Enter Email: ");
                 string email = Console.ReadLine();
                 Console.WriteLine("Enter Password: ");
@@ -133,7 +139,7 @@ namespace ConsoleApp1
                                              ▐  ██║  ██║███████╗╚██████╔╝██║███████║   ██║   ███████╗██║  ██║  ▌
                                              ▐  ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ▌
                                              ▐                                                                 ▌
-                                             ▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌");
+                                             ▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌", Color.YellowGreen);
                 Console.WriteLine("Enter Email: ");
                 string email = Console.ReadLine();
                 Console.WriteLine("Enter Password: ");
@@ -185,13 +191,13 @@ namespace ConsoleApp1
                                          _      _      _      _      _      _      _      _      _      _      _   
                                        _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_ 
                                       (_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)
-                                       (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_) ");
+                                       (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_) ", Color.Aqua);
                 Islogin = false;
                 Console.WriteLine(@"
                                                                       Logging out...");
                 Thread.Sleep(2000);
                 Console.WriteLine(@"
-                                                               You have been logged out");
+                                                               You have been logged out!");
                 Console.WriteLine("Enter any key to return to the menu");
                 Console.ReadKey();
                 Adminpage();

@@ -23,7 +23,7 @@ namespace ConsoleApp1
                     ConsoleApp1.jobposting.AddJobposting();
                     break;
                 default:
-                    Console.WriteLine("invalid");
+                    Console.WriteLine("Invalid!");
                     break;
             }//okay 
 

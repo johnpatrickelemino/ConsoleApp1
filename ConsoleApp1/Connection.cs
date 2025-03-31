@@ -1,10 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using Colorful;
+using Console = Colorful.Console;
 
 namespace ConsoleApp1
 {
@@ -42,9 +45,34 @@ namespace ConsoleApp1
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Console.WriteLine("Data inserted successfully!");
+                Console.WriteLine(@"
+                                                                Data inserted successfully!");
             }// wala kayong jop posting? job title yung nakapangalan ano? wai ano ulit 
             catch (Exception ex) // parang pwedeng palitan yung contact as resume na agad tas jobpsting as documents s
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+
+        public void EvaluateCandidate(int applicantId, string evaluationReport)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO candidate_evaluation (applicantId, evaluationReport) VALUES (@applicantId, @evaluationReport)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@applicantId", applicantId);
+                        cmd.Parameters.AddWithValue("@evaluationReport", evaluationReport);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Console.WriteLine("Evaluation report added successfully!");
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
@@ -174,7 +202,8 @@ namespace ConsoleApp1
                         }
                         else
                         {
-                            Console.WriteLine("No job application found with this ID.");
+                            Console.WriteLine(@"
+                                                              No job application found with this ID.");
                         }
                     }
                 }
@@ -210,14 +239,6 @@ namespace ConsoleApp1
         }
 
 
-
-
-
-
-
-
-
-
         public void Register(string email, string password)
         {
             try
@@ -233,7 +254,8 @@ namespace ConsoleApp1
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Console.WriteLine("Info inserted successfully!"); // ahh sa program ko ilalagay yung Main??
+                Console.WriteLine(@"
+                                                                Info inserted successfully!"); // ahh sa program ko ilalagay yung Main??
 
             }
             catch (Exception ex)
@@ -258,7 +280,8 @@ namespace ConsoleApp1
                         cmd.ExecuteNonQuery();
                     }
                 }
-                Console.WriteLine("Data inserted successfully!");
+                Console.WriteLine(@"
+                                                                   Data inserted successfully!");
             }// wala kayong jop posting? job title yung nakapangalan ano? wai ano ulit 
             catch (Exception ex) // parang pwedeng palitan yung contact as resume na agad tas jobpsting as documents s
             {
@@ -292,15 +315,15 @@ namespace ConsoleApp1
                             | |                                                                                                 | |  
                           __| |_________________________________________________________________________________________________| |__
                           __   _________________________________________________________________________________________________   __
-                            | |                                                                                                 | |  ");
+                            | |                                                                                                 | |  ", Color.Red);
                             while (reader.Read())
                             {
                                 Console.WriteLine(@$"             
-                                                                  Job ID: {reader["id"]}");
+                                                                  Job ID: {reader["id"]}", Color.YellowGreen);
                                 Console.WriteLine(@$"             
-                                                                  Job Title: {reader["jobtitle"]}");
+                                                                  Job Title: {reader["jobtitle"]}", Color.YellowGreen);
                                 Console.WriteLine(@$"             
-                                                                  Description: {reader["jobdescription"]}");
+                                                                  Description: {reader["jobdescription"]}", Color.YellowGreen);
                                 Console.WriteLine(@"
                                                                   -------------------------------");
                             }
@@ -370,20 +393,21 @@ namespace ConsoleApp1
                                     string resume = reader.GetString(7); // Assuming the eighth column is 'resume'
 
                                     // Output the data to the console
-                                    Console.WriteLine($"ID: {id}");
-                                    Console.WriteLine($"Name: {name}");
-                                    Console.WriteLine($"Birthday: {bday}");
-                                    Console.WriteLine($"Address: {address}");
+                                    Console.WriteLine($"ID: {id}", Color.Blue);
+                                    Console.WriteLine($"Name: {name}", Color.Blue);
+                                    Console.WriteLine($"Birthday: {bday}", Color.Blue);
+                                    Console.WriteLine($"Address: {address}", Color.Blue);
                                     Console.WriteLine($"Contact No: {contactno}");
                                     Console.WriteLine($"Gmail: {gmail}");
-                                    Console.WriteLine($"Civil Status: {civilstatus}");
-                                    Console.WriteLine($"Resume: {resume}");
+                                    Console.WriteLine($"Civil Status: {civilstatus}", Color.Blue);
+                                    Console.WriteLine($"Resume: {resume}", Color.Blue);
                                     Console.WriteLine("----------------------------");
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("No data found.");
+                                Console.WriteLine(@"
+                                                                                 No data found.");
                             }
                         }
                     }
